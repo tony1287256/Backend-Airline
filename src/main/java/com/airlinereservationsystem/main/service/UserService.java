@@ -69,6 +69,31 @@ public class UserService implements UserDetailsService {
 	    mailSender.send(message);
 	}
 
-	
+	public void sendEmailOnBooking(int userId) throws InvalidIDException {
+	    Optional<Customer> optional = customerRepository.findById(userId);
+	    
+	    if (!optional.isPresent()) {
+	        throw new InvalidIDException("id not found");
+	    }
+	    
+	    Customer customer = optional.get();
+	    // Assuming userRepository.findById method requires a parameter, replace it accordingly
+	    // User user = userRepository.findById(customer.getId()).orElse(new User());
+	    
+	    String subject = "Booking confirmed!!!";
+	    String text = "Dear " + customer.getName() + ",\n\n" +
+	            "Welcome to FlyEase – Booking Successfully Done Get ready to soar to new heights!\n\n" +
+	            "Safe travels and happy exploring!\n\n" +
+	            "Warm regards,\n\n" +
+	            "Airease Team"; // Add any additional text if needed
+
+	    // Assuming mailSender is an instance of JavaMailSender
+	    SimpleMailMessage message = new SimpleMailMessage();
+	    message.setTo(customer.getEmail());
+	    message.setSubject(subject);
+	    message.setText(text);
+	    mailSender.send(message);
+	}
+
 	
 }

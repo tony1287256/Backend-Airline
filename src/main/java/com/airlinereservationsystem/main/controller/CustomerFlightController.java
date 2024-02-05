@@ -32,6 +32,7 @@ import com.airlinereservationsystem.main.service.CustomerFlightService;
 import com.airlinereservationsystem.main.service.CustomerService;
 import com.airlinereservationsystem.main.service.FlightService;
 import com.airlinereservationsystem.main.service.SeatService;
+import com.airlinereservationsystem.main.service.UserService;
 
 @RestController
 @RequestMapping("/customerflight")
@@ -43,6 +44,9 @@ public class CustomerFlightController {
 	private FlightService flightService;
 	@Autowired
 	private SeatService seatService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private CustomerFlightService customerFlightService;
@@ -81,7 +85,7 @@ public class CustomerFlightController {
 				totalPrice = totalPrice + (customerFlight.getPrice());
 				// Add the processed ticket to the list
 				bookedTickets.add(customerFlightService.insert(customerFlight));
-				
+				userService.sendEmailOnBooking(cid);
 				
 			}
 			
